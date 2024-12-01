@@ -35,7 +35,7 @@ func SideBySide(s string) (int, int) {
 	}
 //  return sL, sR // this to confirm that the sL and sR has been sorted out properly, must change the output to be ([]int, []int)
 	
-	num := 0
+	num := 0 // part1
 
 	for i := 0; i < len(sL) && i < len(sR); i++ {
 		if sL[i] > sR[i] {
@@ -45,7 +45,7 @@ func SideBySide(s string) (int, int) {
 		}
 	}
 	
-	total := 0
+	total := 0 // part2
 	sum := 0
 	match := false
 	for i := 0; i < len(sL); i++ {
