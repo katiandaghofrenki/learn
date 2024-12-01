@@ -23,7 +23,7 @@ func SideBySide(s string) int {
 		sR = append(sR, rhs)
 	}
 	
-	for i := 0; i < len(sL)-1 && i < len(sR)-1; i++ {
+	for i := 0; i < len(sL)-1 && i < len(sR)-1; i++ { // to sort the sL and sR
 		for j := i + 1; j < len(sL) && j < len(sR); j++ {
 			if sL[i] > sL[j] {
 				sL[i], sL[j] = sL[j], sL[i]
@@ -33,7 +33,7 @@ func SideBySide(s string) int {
 			}
 		}
 	}
-
+//  return sL, sR // this to confirm that the sL and sR has been sorted out properly, must change the output to be ([]int, []int)
 	
 	num := 0
 
