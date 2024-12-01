@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func SideBySide(s string) int {
+func SideBySide(s string) (int, int) {
 	// split string s new line
 	lines := strings.Split(s, "\n")
 
@@ -44,7 +44,7 @@ func SideBySide(s string) int {
 			num += (sR[i] - sL[i])
 		}
 	}
-	// return num // the answer for part one
+	
 	total := 0
 	sum := 0
 	match := false
@@ -60,5 +60,5 @@ func SideBySide(s string) int {
 			}
 		}
 	}
-	return total // the answer for part two
+	return num, total
 }
