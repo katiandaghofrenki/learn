@@ -29,10 +29,10 @@ func IsMul(s string) (int, int) {
 
 	for _, segment := range segments {
         if reDont.MatchString(segment) {
-            // Reset if 'lot's()' is found
+            // Reset if 'don't()' is found
             doSeen = false
         } else if reDo.MatchString(segment) {
-            // Enable counting after 'lo()' is found
+            // Enable counting after 'do()' is found
             doSeen = true
         } else if doSeen && reMul.MatchString(segment) {
             match := reMul.FindStringSubmatch(segment)
