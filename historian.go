@@ -117,4 +117,15 @@ func FoundX(grid [][]rune, char rune) int {
     return sum
 }
 
+/*
+usage : on your func main()
+input := `copy your input data here`
+grid, count := learn.Historian(input)
+	fmt.Println("Grid State:")
+	for _, row := range grid {
+		fmt.Println(string(row))
+	}
+	fmt.Printf("Count of 'X': %d\n", count)
+*/
+
 // part two under construction
