@@ -116,3 +116,5 @@ func FoundX(grid [][]rune, char rune) int {
     }
     return sum
 }
+
+// part two under construction
