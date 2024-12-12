@@ -36,7 +36,7 @@ func Printing(s1 string, s2 string) int {
     return sumMiddleNumbers
 }
 
-func ToInt(s string) int {
+func ToInt2(s string) int {
     num := 0
     for i := 0; i < len(s); i++ {
         num = num*10 + int(s[i]-'0') // Convert character to int and add to num

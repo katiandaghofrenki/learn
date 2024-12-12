@@ -93,7 +93,7 @@ func Historian(s string) ([][]rune, int) {
     foundX := FoundX(grid, 'X')
     return grid, foundX
 }
-
+/* // available on helps.go
 func Found(grid [][]rune, char rune) (int, int, bool) {
     for i, row := range grid {
         for j, col := range row {
@@ -116,7 +116,7 @@ func FoundX(grid [][]rune, char rune) int {
     }
     return sum
 }
-
+*/
 func GridRuneToString(grid [][]rune) string {
     result := ""
     for i, row := range grid {
