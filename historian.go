@@ -117,89 +117,116 @@ func FoundX(grid [][]rune, char rune) int {
     return sum
 }
 
-/*
-usage : on your func main()
-input := `copy your input data here`
-grid, count := learn.Historian(input)
-	fmt.Println("Grid State:")
-	for _, row := range grid {
-		fmt.Println(string(row))
-	}
-	fmt.Printf("Count of 'X': %d\n", count)
-*/
-
-// part two under construction
-
-func Historian2(s string) ([][]rune, int) {
-    lines := strings.Split(s, "\n")
-    
-    grid := make([][]rune, len(lines))
-    for i, line := range lines {
-        parts := strings.TrimSpace(line)
-        grid[i] = []rune(parts)
-    }
-
-    count := 0
-
-    char := '^'
-    x, y, found := Found(grid, char)
-
-    for i := 0; i < len(grid)*len(grid[0]); i++ {
-        if found {
-            if x > 0 && grid[x-1][y] != '#' {
-                grid[x-1][y] = '|'
-                x = x - 1
-            } else if x > 0 && grid[x-1][y] == '#' && grid[x][y] != '^' {
-                grid[x][y] = '+'
-                // Fill '-' all the way to the '#'
-                if grid[x][y] == '+' && grid[x-1][y] == '#' && y+1 < len(grid[0]) && grid[x][y+1] != '#' {
-                    for y+1 < len(grid[0]) && grid[x][y+1] != '#' {
-                        grid[x][y+1] = '-'
-                        y = y + 1
-                    }
-                    // Change direction to down when hitting a '#'
-                    if y+1 < len(grid[0]) && grid[x][y+1] == '#' {
-                        grid[x][y] = '+'
-                        if grid[x][y] == '+' && grid[x][y+1] == '#' && x+1 < len(grid) && grid[x+1][y] != '#' {
-                            for x+1 < len(grid) && grid[x+1][y] != '#' {
-                                grid[x+1][y] = '|'
-                                x = x + 1
-                            }
-                            // Change direction to left when hitting a '#'
-                            if x+1 < len(grid) && grid[x+1][y] == '#' {
-                                grid[x][y] = '+'
-                                if grid[x][y] == '+' && grid[x+1][y] == '#' && y > 0 && grid[x][y-1] != '#' {
-                                    for y > 0 && grid[x][y-1] != '#' {
-                                        if grid[x][y-1] != '|' || grid[x][y-1] != '+' || grid[x][y-1] != '^' {
-                            
-                                            if grid[x][y-1] == '^' {
-                                                grid[x][y-1] = '^'
-                                                grid[x][y-2] = '0'
-                                                break
-                                            } else {
-                                                grid[x][y-1] = '-'
-                                                y = y - 1
-                                            }
-
-                                        }
-                                        
-                                    }
-                                    // Change direction to left when hitting a '#'
-                                    if y > 0 && grid[x][y-1] == '#' {
-                                        grid[x][y] = '+'
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } else {
-            continue
+func GridRuneToString(grid [][]rune) string {
+    result := ""
+    for i, row := range grid {
+        result += string(row)
+        if i < len(grid)-1 {
+            result += "\n"
         }
     }
-    
+    return result
+}
 
-    
-    return grid, count // not yet done
+func Historian2(inputStr string) int {
+    // Convert input string into a 2D slice (grid) of characters
+    lines := strings.Split(strings.TrimSpace(inputStr), "\n")
+    grid := make([][]rune, len(lines))
+    for i := range lines {
+        grid[i] = []rune(lines[i])
+    }
+
+    n := len(grid)      // Number of rows in the grid
+    m := len(grid[0])   // Number of columns in the grid
+
+    // Find the initial position of the character '^'
+    found := false
+    var i, j int
+    for i = 0; i < n; i++ {
+        for j = 0; j < m; j++ {
+            if grid[i][j] == '^' {
+                found = true
+                break
+            }
+        }
+        if found {
+            break
+        }
+    }
+
+    ii, jj := i, j  // Initial position of '^'
+    dd := [][]int{
+        {-1, 0},  // up
+        {0, 1},   // right
+        {1, 0},   // down
+        {0, -1},  // left
+    }
+
+    dir := 0
+    ogSeen := make(map[[2]int]bool)
+    for {
+        ogSeen[[2]int{i, j}] = true
+
+        // Calculate next position based on current direction
+        nextI := i + dd[dir][0]
+        nextJ := j + dd[dir][1]
+
+        // Check if the next position is within grid boundaries
+        if !(0 <= nextI && nextI < n && 0 <= nextJ && nextJ < m) {
+            break
+        }
+
+        // Change direction if the next position is a wall '#'
+        if grid[nextI][nextJ] == '#' {
+            dir = (dir + 1) % 4  // Rotate direction clockwise
+        } else {
+            i, j = nextI, nextJ
+        }
+    }
+
+    Will_Loop := func(oi, oj int) bool {
+        if grid[oi][oj] == '#' {
+            return false  // Cannot place obstacle on a wall '#'
+        }
+
+        grid[oi][oj] = '#'  // Temporarily place obstacle
+        i, j = ii, jj
+
+        dir = 0
+        seen := make(map[[3]int]bool)
+        for {
+            if seen[[3]int{i, j, dir}] {
+                grid[oi][oj] = '.'  // Reset the temporary obstacle
+                return true  // Infinite loop detected
+            }
+            seen[[3]int{i, j, dir}] = true
+
+            nextI := i + dd[dir][0]
+            nextJ := j + dd[dir][1]
+
+            if !(0 <= nextI && nextI < n && 0 <= nextJ && nextJ < m) {
+                grid[oi][oj] = '.'  // Reset the temporary obstacle
+                return false  // Not an infinite loop
+            }
+
+            if grid[nextI][nextJ] == '#' {
+                dir = (dir + 1) % 4  // Rotate direction clockwise
+            } else {
+                i, j = nextI, nextJ
+            }
+        }
+    }
+
+    ans := 0
+    for pos := range ogSeen {
+        oi, oj := pos[0], pos[1]
+        if oi == ii && oj == jj {
+            continue
+        }
+        if Will_Loop(oi, oj) {
+            ans++
+        }
+    }
+
+    return ans
 }
