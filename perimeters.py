@@ -52,3 +52,10 @@ def CalculatePerimeter(input_string):
     for c, plot in plots:
         ans += Perimeter(plot, grid, n, dd) * len(plot)
     return ans
+
+
+# usage on main.py
+# from learn.perimeters import CalculatePerimeter
+# input := '''copy input to here'''
+# result := CalculatePerimeter(input)
+# print(result)
