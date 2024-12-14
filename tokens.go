@@ -102,9 +102,68 @@ func Token(s string) int {
 			}
         }
     }
-    return int(total)
+    inTotal := int(total)
+    return inTotal
+}
+
+func Tokens(s string) int {
+	newLines := Str2Slice(s)
+	newString := NewString(newLines)
+    costA := 0.00
+    costB := 0.00
+    costTokenA := 3.00
+    costTokenB := 1.00
+    total := 0.00
+    lines := strings.Split(newString, "\n")
+
+    for i, line := range lines {
+        parts := strings.Fields(line)
+        if len(parts) < 3 {
+            continue
+        }
+        parts1 := strings.Split(string(parts[0]), "Y+")
+        parts2 := strings.Split(string(parts[1]), "Y+")
+        parts3 := strings.Split(string(parts[2]), "Y=")
+
+        if len(parts1) < 2 || len(parts2) < 2 || len(parts3) < 2 {
+            continue
+        }
+
+        lhsparts1 := strings.Split(string(parts1[0]), "X+")
+        lhsparts2 := strings.Split(string(parts2[0]), "X+")
+        lhsparts3 := strings.Split(string(parts3[0]), "X=")
+
+        if len(lhsparts1) < 2 || len(lhsparts2) < 2 || len(lhsparts3) < 2 {
+            continue
+        }
+
+        xA := float64(ToInt(lhsparts1[1])) // func ToInt is on helps.go
+        yA := float64(ToInt(parts1[1]))
+        xB := float64(ToInt(lhsparts2[1]))
+        yB := float64(ToInt(parts2[1]))
+        priceX := float64(ToInt(lhsparts3[1])+10000000000000)
+        priceY := float64(ToInt(parts3[1])+10000000000000)
+
+        timeA := ((priceY*xB) - (priceX*yB)) / ((yA*xB) - (xA*yB))
+        timeB := ((priceY*xA) - (priceX*yA)) / ((yB*xA) - (xB*yA))
+
+
+        if IsIntegers(timeA) && IsIntegers(timeB) {
+			priceXresult := (timeA*xA) + (timeB*xB)
+			priceYresult := (timeA*yA) + (timeB*yB)
+			if  priceX == priceXresult && priceY == priceYresult {
+				costA = costTokenA * timeA
+				costB = costTokenB * timeB
+				total += (costA + costB)
+				i++
+			}
+        }
+    }
+    inTotal := int(total)
+    return inTotal
 }
 
 // usage --> func Main()
 // input := `copy your input to here`
 // fmt.Println("result part1: \n", learn.Token(input))
+// fmt.Println("result part2: \n", learn.Tokens(input))
