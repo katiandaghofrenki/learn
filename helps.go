@@ -30,3 +30,7 @@ func FoundX(grid [][]rune, char rune) int {
     }
     return sum
 }
+
+func TryMe() string {
+    return "you can try what ever you want in here. This has similar function with func main(). Just change the output as this is string so the output is string"
+}
