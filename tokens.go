@@ -91,7 +91,7 @@ func Token(s string) int {
         timeB := ((priceY*xA) - (priceX*yA)) / ((yB*xA) - (xB*yA))
 
 
-        if IsIntegers(timeA) && IsIntegers(timeB) {
+        if IsIntegers(timeA) && IsIntegers(timeB) && timeA > 0 && timeA <= 100 && timeB > 0 && timeB <= 100 {
 			priceXresult := (timeA*xA) + (timeB*xB)
 			priceYresult := (timeA*yA) + (timeB*yB)
 			if  priceX == priceXresult && priceY == priceYresult {
