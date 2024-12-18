@@ -2,10 +2,23 @@ package learn
 
 func ToInt(s string) int {
     num := 0
-    for i := 0; i < len(s); i++ {
-        num = num*10 + int(s[i]-'0') // Convert character to int and add to num
+    sign := 1
+    startIndex := 0
+
+    if len(s) > 0 && s[0] == '-' {
+        sign = -1
+        startIndex = 1
+    } else if s[0] == '+' {
+        startIndex = 1
     }
-    return num
+
+    for i := startIndex; i < len(s); i++ {
+        if s[i] < '0' || s[i] > '9' {
+            return 0
+        }
+        num = num*10 + int(s[i] - '0')
+    }
+    return num*sign
 }
 
 func Found(grid [][]rune, char rune) (int, int, bool) {
